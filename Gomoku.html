@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋大师</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="game-container">
+            <div class="status-panel">
+                <div class="status-item" id="current-player">
+                    <div class="status-label">当前状态</div>
+                    <div class="status-value">游戏准备中...</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">黑方得分</div>
+                    <div class="status-value" id="black-score">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">白方得分</div>
+                    <div class="status-value" id="white-score">0</div>
+                </div>
+            </div>
+
+            <canvas id="chessBoard" width="630" height="630" aria-label="五子棋棋盘"></canvas>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="totalGames">总局数：</label>
+                    <select class="styled-select" id="totalGames">
+                        <option value="3">3局2胜</option>
+                        <option value="5">5局3胜</option>
+                        <option value="7">7局4胜</option>
+                        <option value="9">9局5胜</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="difficulty">难度：</label>
+                    <select class="styled-select" id="difficulty">
+                        <option value="easy">简单</option>
+                        <option value="medium">中等</option>
+                        <option value="hard">困难</option>
+                    </select>
+                </div>
+
+                <div class="control-group ai-toggle-group">
+                    <label for="aiMode">AI对战：</label>
+                    <label class="ai-toggle">
+                        <input type="checkbox" id="aiMode">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <button class="game-btn" onclick="newGame()">
+                    新游戏
+                </button>
+            </div>
+
+            <div class="winner-modal" id="winnerModal">
+                <h2 id="winnerText" style="color: var(--primary-color); margin: 0 0 1rem 0;"></h2>
+                <p id="roundResult" style="color: #7f8c8d;"></p>
+                <button class="game-btn" id="continueBtn">
+                    继续游戏
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

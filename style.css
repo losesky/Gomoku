@@ -1,0 +1,279 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --board-color: #FFE4C4;
+    --text-color: #333;
+    --light-bg: #f9f9f9;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* 整个app容器，用于居中和设置最大宽度 */
+.app-container {
+    width: 95%;
+    max-width: 800px; /* 根据需要调整 */
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.game-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 使canvas自适应宽度 */
+canvas {
+    border: 3px solid var(--primary-color);
+    border-radius: 10px;
+    background: var(--board-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    width: 100%; /*  确保canvas占据容器的全部宽度 */
+    max-width: 630px; /* 防止canvas过大 */
+    height: auto; /* 保持宽高比 */
+    aspect-ratio: 1 / 1; /* 保持宽高相等 */
+    box-sizing: border-box;
+}
+
+canvas:hover {
+    transform: scale(1.01);
+}
+
+.status-panel {
+    background: white;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 响应式列 */
+    gap: 0.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.status-item {
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    background: var(--light-bg);
+    box-sizing: border-box;
+}
+
+.status-item.active {
+    transform: scale(1.00);
+}
+
+.status-label {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-bottom: 0.25rem;
+}
+
+.status-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* 控制区域样式 */
+.controls {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0.8rem 0.8rem 0.8rem 0.3rem;
+}
+
+.control-group {
+    /* display: flex; */
+    flex-direction: column; /* Stack labels and selects */
+    align-items: center; /* Center items horizontally */
+}
+
+.controls label {
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* 下拉选择框样式 */
+.styled-select {
+    position: relative;
+    background: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.2em;
+    font-size: 0.9rem;
+    min-width: 80px;
+}
+
+/* 按钮样式 */
+.game-btn {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /*  新增： 水平居中 */
+    text-align: center;        /*  新增： 文本居中 */
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.game-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* AI切换按钮样式 */
+.ai-toggle-group {
+    /* display: flex; */
+    align-items: center;
+}
+
+.ai-toggle {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+}
+
+.ai-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--secondary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(16px);
+}
+
+/* 模态框样式 */
+.winner-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: none;
+    width: 80%;
+    max-width: 400px;
+}
+
+.winner-modal.show {
+    display: block;
+    animation: modalEnter 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* 加载动画 */
+.loader {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 响应式布局 */
+@media (max-width: 600px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch; /* 让控件占据全部宽度 */
+    }
+
+    .controls > * {
+        width: 100%; /* 使按钮和选择框占据全部宽度 */
+        margin-bottom: 0.5rem;
+    }
+
+    .styled-select {
+        width: 100%;
+    }
+
+    .game-btn {
+        width: 100%;
+    }
+}
